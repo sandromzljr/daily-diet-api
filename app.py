@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, jsonify
 from database import db
 from models.diet import Meal
@@ -47,6 +48,17 @@ def update_meal(id):
         db.session.commit()
 
         return jsonify({"message": f"REFEIÇÃO {id} ALTERADA COM SUCESSO - TEST"}), 200
+
+@app.route("/refeicao", methods=["GET"])
+def list_meals():
+    meals = Meal.query.all()
+    print(meals)
+
+    if isinstance(None, type(meals)):
+        return jsonify({"message": "NÃO FOI POSSÍVEL MOSTRAR LISTA DE REFEIÇÕES - TEST"}), 404
+
+
+    return jsonify({"message": meal.name}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
